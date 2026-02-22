@@ -75,6 +75,17 @@ with st.expander("How do I get the checkpoint file path?"):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
+st.set_page_config(page_title="FinBERT + LSTM Stock Movement", layout="wide")
+st.title("Financial News Sentiment Driven Stock Movement Prediction")
+
+st.markdown("Run interactive inference with optional checkpoint loading.")
+
+checkpoint_path = st.text_input(
+    "Checkpoint path (optional)", value="artifacts/finbert_lstm.pt"
+)
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 @st.cache_resource(show_spinner=True)
 def get_artifacts(path: str):
     return load_or_init_artifacts(path, device=device)
@@ -86,6 +97,9 @@ if not Path(checkpoint_path).exists():
         "Checkpoint not found. Predictions are from an untrained randomly initialized model. "
         "Train first for meaningful output."
     )
+artifacts = get_artifacts(checkpoint_path)
+if not Path(checkpoint_path).exists():
+    st.info("No checkpoint found; using default initialized model weights.")
 
 st.caption(
     f"Running on {device.type.upper()} | seq_len={artifacts.seq_len} | "
@@ -103,6 +117,10 @@ default_df = build_default_market_df(artifacts.seq_len, columns)
 
 st.subheader("Market sequence input")
 st.caption("Prefilled with an example trend so values are not all 100. You can edit any cell.")
+default_value = {col: 100.0 for col in columns}
+default_df = pd.DataFrame([default_value] * artifacts.seq_len)
+
+st.subheader("Market sequence input")
 market_df = st.data_editor(
     default_df,
     num_rows="fixed",

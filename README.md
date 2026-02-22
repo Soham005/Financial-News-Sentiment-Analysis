@@ -27,6 +27,7 @@ This repository provides a starter implementation for a **hybrid prediction pipe
 - `src/train.py`: end-to-end training loop with dummy data generation.
 - `src/inference.py`: checkpoint loading and prediction utilities.
 - `app.py`: Streamlit inference app.
+
 - `requirements.txt`: Python dependencies.
 
 ## Installation

@@ -29,3 +29,5 @@ streamlit run app.py
 - If `artifacts/finbert_lstm.pt` exists and contains `model_state_dict`, the app loads it.
 - If no checkpoint is found, the app still runs but predictions come from an untrained model.
 - The market table is prefilled with a realistic trend example and is fully editable.
+- If no checkpoint is found, the app still runs using default initialized model weights.
+- For meaningful predictions, train and save your own checkpoint in your workflow.
