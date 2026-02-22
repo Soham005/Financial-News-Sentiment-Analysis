@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 
 import numpy as np
@@ -39,6 +40,32 @@ def make_dummy_data(rows: int = 400) -> tuple[pd.DataFrame, list[str]]:
     texts = ["Market outlook is stable with mixed signals." for _ in range(rows)]
     return frame, texts
 
+
+def save_checkpoint(
+    model: FinBERTLSTMHybrid,
+    scaler: StandardScaler,
+    sequence_config: SequenceConfig,
+    output_path: str,
+) -> None:
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(
+        {
+            "model_state_dict": model.state_dict(),
+            "finbert_model_name": model.finbert_model_name,
+            "market_input_size": model.market_input_size,
+            "market_hidden_size": model.market_hidden_size,
+            "market_layers": model.market_layers,
+            "fusion_hidden_size": model.fusion_hidden_size,
+            "dropout": model.dropout,
+            "seq_len": sequence_config.seq_len,
+            "market_feature_cols": list(sequence_config.market_feature_cols),
+            "target_col": sequence_config.target_col,
+            "scaler_mean": scaler.mean_.tolist(),
+            "scaler_scale": scaler.scale_.tolist(),
+        },
+        out,
+    )
 
 
 def train(args: argparse.Namespace) -> None:
@@ -96,6 +123,9 @@ def train(args: argparse.Namespace) -> None:
         val_acc = correct / max(total, 1)
         print(f"Epoch {epoch + 1}: train_loss={train_loss:.4f}, val_acc={val_acc:.4f}")
 
+    if args.save_checkpoint:
+        save_checkpoint(model=model, scaler=scaler, sequence_config=config, output_path=args.output_path)
+        print(f"Saved checkpoint to: {args.output_path}")
 
 
 if __name__ == "__main__":

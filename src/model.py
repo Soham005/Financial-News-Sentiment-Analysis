@@ -19,6 +19,12 @@ class FinBERTLSTMHybrid(nn.Module):
     ) -> None:
         super().__init__()
 
+        self.finbert_model_name = finbert_model_name
+        self.market_input_size = market_input_size
+        self.market_hidden_size = market_hidden_size
+        self.market_layers = market_layers
+        self.fusion_hidden_size = fusion_hidden_size
+        self.dropout = dropout
 
         self.tokenizer = AutoTokenizer.from_pretrained(finbert_model_name)
         self.finbert = AutoModel.from_pretrained(finbert_model_name)

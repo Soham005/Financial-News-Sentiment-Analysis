@@ -25,6 +25,8 @@ This repository provides a starter implementation for a **hybrid prediction pipe
 - `src/data.py`: sequence dataset and scaling utilities.
 - `src/model.py`: FinBERT + LSTM hybrid network.
 - `src/train.py`: end-to-end training loop with dummy data generation.
+- `src/inference.py`: checkpoint loading and prediction utilities.
+- `app.py`: Streamlit inference app.
 
 - `requirements.txt`: Python dependencies.
 
@@ -35,6 +37,28 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## Train and Save a Checkpoint
+
+Run a demo training job (uses generated dummy data) and save model artifacts:
+
+```bash
+python src/train.py --epochs 2 --batch-size 8 --seq-len 10 --save-checkpoint --output-path artifacts/finbert_lstm.pt
+```
+
+## Run with Streamlit
+
+After creating a checkpoint, start the app:
+
+```bash
+streamlit run app.py
+```
+
+Then in the browser:
+- provide the checkpoint path (default: `artifacts/finbert_lstm.pt`),
+- input/adjust market sequence rows,
+- paste financial news text,
+- click **Predict movement probability**.
 
 ## Expected Real-World Data Format
 
