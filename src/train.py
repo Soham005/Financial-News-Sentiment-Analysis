@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 
+
 import numpy as np
 import pandas as pd
 import torch
@@ -37,6 +38,7 @@ def make_dummy_data(rows: int = 400) -> tuple[pd.DataFrame, list[str]]:
     frame["target"] = (frame["ret"] > 0).astype(np.float32)
     texts = ["Market outlook is stable with mixed signals." for _ in range(rows)]
     return frame, texts
+
 
 
 def train(args: argparse.Namespace) -> None:
@@ -95,6 +97,7 @@ def train(args: argparse.Namespace) -> None:
         print(f"Epoch {epoch + 1}: train_loss={train_loss:.4f}, val_acc={val_acc:.4f}")
 
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--rows", type=int, default=400)
@@ -102,4 +105,6 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--lr", type=float, default=2e-5)
+    parser.add_argument("--save-checkpoint", action="store_true")
+    parser.add_argument("--output-path", type=str, default="artifacts/finbert_lstm.pt")
     train(parser.parse_args())

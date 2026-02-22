@@ -19,6 +19,7 @@ class FinBERTLSTMHybrid(nn.Module):
     ) -> None:
         super().__init__()
 
+
         self.tokenizer = AutoTokenizer.from_pretrained(finbert_model_name)
         self.finbert = AutoModel.from_pretrained(finbert_model_name)
         finbert_dim = self.finbert.config.hidden_size

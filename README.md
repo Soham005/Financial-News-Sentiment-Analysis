@@ -25,6 +25,7 @@ This repository provides a starter implementation for a **hybrid prediction pipe
 - `src/data.py`: sequence dataset and scaling utilities.
 - `src/model.py`: FinBERT + LSTM hybrid network.
 - `src/train.py`: end-to-end training loop with dummy data generation.
+
 - `requirements.txt`: Python dependencies.
 
 ## Installation
@@ -33,14 +34,6 @@ This repository provides a starter implementation for a **hybrid prediction pipe
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-## Quick Start
-
-Run a demo training job (uses generated dummy data):
-
-```bash
-python src/train.py --epochs 2 --batch-size 8 --seq-len 10
 ```
 
 ## Expected Real-World Data Format
